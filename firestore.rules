@@ -1,0 +1,46 @@
+rules_version = '2';
+// Dán vào: Firebase Console → Firestore Database → Rules → Publish.
+//  - Học sinh (không đăng nhập): chỉ GHI bài của mình, KHÔNG đọc/xóa được.
+//  - Giáo viên (đăng nhập Google bằng đúng email bên dưới): đọc/xóa được, dùng trang teacher.html.
+// ★ Đổi email giáo viên ở hàm isTeacher() nếu cần.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isTeacher() {
+      return request.auth != null
+          && request.auth.token.email == 'kydung204@gmail.com'
+          && request.auth.token.email_verified == true;
+    }
+
+    // Tên bài học (để trang giáo viên liệt kê các bài)
+    match /lessons/{lessonId} {
+      allow get, list, delete: if isTeacher();
+      allow create, update: if lessonId.matches('^[a-z0-9-]{1,40}$')
+                            && request.resource.data.keys().hasOnly(['title', 'updatedAt'])
+                            && request.resource.data.title is string
+                            && request.resource.data.title.size() <= 100;
+    }
+
+    // Bài của từng học sinh
+    match /lessons/{lessonId}/students/{studentKey} {
+      allow get, list, delete: if isTeacher();
+      allow create, update: if lessonId.matches('^[a-z0-9-]{1,40}$')
+                            && studentKey.matches('^[A-Za-z0-9]{1,15}_[A-Za-z0-9]{1,40}$')
+                            && validDoc(request.resource.data);
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function validDoc(d) {
+      return d.keys().hasOnly(['lessonId', 'student', 'learning', 'practice', 'progress', 'final', 'updatedAt'])
+          && d.lessonId is string && d.lessonId.size() <= 40
+          && d.student.name is string && d.student.name.size() > 0 && d.student.name.size() <= 80
+          && d.student.className is string && d.student.className.size() > 0 && d.student.className.size() <= 20
+          && (!('learning' in d) || (d.learning is list && d.learning.size() <= 20))
+          && (!('practice' in d) || (d.practice is list && d.practice.size() <= 20))
+          && (!('final' in d) || (d.final.code is string && d.final.code.size() <= 100000));
+    }
+  }
+}

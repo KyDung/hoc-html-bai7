@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Giáo viên – Xem bài nộp</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/teacher.css">
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-logo">👩‍🏫</span>
+        <div><strong>Trang giáo viên</strong><span class="brand-sub">Xem bài nộp của học sinh</span></div>
+      </div>
+      <div class="who-box"><span id="t-user"></span> <button type="button" id="t-signout" class="link-btn" hidden>Đăng xuất</button></div>
+    </div>
+  </header>
+
+  <main class="container t-container">
+    <!-- Màn hình đăng nhập -->
+    <div id="t-login" class="card narrow center" hidden>
+      <div class="big-emoji">🔐</div>
+      <h2>Đăng nhập giáo viên</h2>
+      <p>Chỉ tài khoản Google của giáo viên mới xem được bài nộp.</p>
+      <button type="button" id="t-signin" class="btn btn-primary">Đăng nhập bằng Google</button>
+      <p id="t-login-msg" class="form-error" role="alert"></p>
+    </div>
+
+    <p id="t-loading" class="muted">Đang tải…</p>
+
+    <!-- Màn hình chính -->
+    <div id="t-app" hidden>
+      <div class="card t-toolbar">
+        <label>Bài học <select id="t-lesson"></select></label>
+        <label>Lớp <select id="t-class"><option value="">Tất cả</option></select></label>
+        <label>Tìm tên <input id="t-search" type="search" placeholder="Nhập tên…"></label>
+        <label>Hiện <select id="t-status">
+          <option value="">Tất cả</option><option value="final">Đã nộp vận dụng</option>
+          <option value="part1">Đã nộp phần 1</option><option value="nofinal">Chưa nộp vận dụng</option>
+          <option value="flag">Có cảnh báo</option></select></label>
+        <button type="button" id="t-csv" class="btn btn-ghost">⬇ Xuất CSV</button>
+        <span id="t-count" class="muted"></span>
+      </div>
+      <p id="t-error" class="form-error" role="alert"></p>
+
+      <div class="t-layout">
+        <div class="card t-list"><div class="t-table-wrap"><table class="t-table" id="t-table"></table></div></div>
+        <div class="card t-detail" id="t-detail"><p class="muted">Chọn một học sinh ở bảng bên trái để xem bài.</p></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/teacher.js"></script>
+</body>
+</html>
