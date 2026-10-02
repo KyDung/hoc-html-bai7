@@ -31,7 +31,14 @@ const Editor = (() => {
     const autoBox = host.querySelector(".ce-auto");
     ta.placeholder = opts.placeholder || "";
     ta.value = opts.value || "";
-    autoBox.checked = !!opts.autoClose;
+    // Nhớ lựa chọn "Tự đóng thẻ" giữa các bài/tab (lưu ở trình duyệt, không bị xóa khi đổi học sinh).
+    const PREF_KEY = "html-learning-pref-autoclose";
+    let saved = null;
+    try { saved = localStorage.getItem(PREF_KEY); } catch (e) { /* bỏ qua */ }
+    autoBox.checked = saved === null ? !!opts.autoClose : saved === "1";
+    autoBox.addEventListener("change", () => {
+      try { localStorage.setItem(PREF_KEY, autoBox.checked ? "1" : "0"); } catch (e) { /* bỏ qua */ }
+    });
 
     const stats = Object.assign(emptyStats(), opts.stats || {});
     let lastLen = ta.value.length;

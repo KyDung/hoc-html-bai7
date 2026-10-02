@@ -16,9 +16,13 @@ const Practice = (() => {
     },
     {
       id: "practice-paragraph", name: "Paragraph và br", title: "Bài 2 – Paragraph và br",
-      task: `<p>Hãy viết một đoạn giới thiệu ngắn về bản thân.</p>
-        <p>Đoạn văn phải:</p>
-        <ul><li>được đặt trong thẻ <code>&lt;p&gt;</code>;</li><li>có ít nhất 3 dòng;</li><li>sử dụng ít nhất 2 thẻ <code>&lt;br&gt;</code>.</li></ul>`,
+      task: `<p>Hãy viết <strong>một đoạn văn giới thiệu bản thân gồm đúng 3 dòng</strong>:</p>
+        <ol><li>Dòng 1: họ và tên của em;</li><li>Dòng 2: em học lớp nào, trường nào;</li><li>Dòng 3: một điều em thích hoặc mong muốn.</li></ol>
+        <p>Cách làm:</p>
+        <ul><li>Đặt cả 3 dòng trong <strong>một</strong> thẻ <code>&lt;p&gt;</code>;</li>
+        <li>Giữa các dòng dùng thẻ <code>&lt;br&gt;</code> để xuống dòng (cần dùng 2 thẻ <code>&lt;br&gt;</code>);</li>
+        <li>Nội dung từng dòng do em tự viết.</li></ul>
+        <p class="muted">Kết quả hiển thị phải là 3 dòng chữ nằm trên 3 dòng riêng, trong cùng một đoạn văn.</p>`,
       validate: V.validatePracticeParagraph,
       success: "Em đã viết được đoạn văn nhiều dòng bằng <p> và <br>.",
     },
